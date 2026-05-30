@@ -2,6 +2,7 @@ const ROTAS = [
   { chave: "dashboard", icone: "◈", label: "Dashboard" },
   { chave: "contas", icone: "📋", label: "Contas a Pagar" },
   { chave: "assinaturas", icone: "🔄", label: "Assinaturas" },
+  { chave: "metas", icone: "🎯", label: "Metas" },
 ];
 
 export default function Sidebar({ paginaAtual, aoNavegar, usuario, aoSair }) {
