@@ -84,3 +84,36 @@ export async function cancelarAssinaturaApi(assinaturaId) {
   });
   return resposta.json();
 }
+
+export async function listarMetasApi() {
+  const resposta = await fetch(`${URL_BASE}/metas/`, {
+    headers: cabecalhosAutenticados(),
+  });
+  return resposta.json();
+}
+
+export async function criarMetaApi(dados) {
+  const resposta = await fetch(`${URL_BASE}/metas/`, {
+    method: "POST",
+    headers: cabecalhosAutenticados(),
+    body: JSON.stringify(dados),
+  });
+  return resposta.json();
+}
+
+export async function depositarMetaApi(metaId, valor) {
+  const resposta = await fetch(`${URL_BASE}/metas/${metaId}/depositar`, {
+    method: "PATCH",
+    headers: cabecalhosAutenticados(),
+    body: JSON.stringify({ valor }),
+  });
+  return resposta.json();
+}
+
+export async function excluirMetaApi(metaId) {
+  const resposta = await fetch(`${URL_BASE}/metas/${metaId}`, {
+    method: "DELETE",
+    headers: cabecalhosAutenticados(),
+  });
+  return resposta.json();
+}

@@ -7,6 +7,7 @@ from modelos import usuario, financeiro
 from blueprints.bp_auth import bp_auth
 from blueprints.bp_contas import bp_contas
 from blueprints.bp_assinaturas import bp_assinaturas
+from blueprints.bp_metas import bp_metas
 
 
 def criar_app():
@@ -21,6 +22,7 @@ def criar_app():
     app.register_blueprint(bp_auth)
     app.register_blueprint(bp_contas)
     app.register_blueprint(bp_assinaturas)
+    app.register_blueprint(bp_metas)
 
     with app.app_context():
         bd.create_all()
