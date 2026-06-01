@@ -5,6 +5,7 @@ import PaginaAuth from "./paginas/PaginaAuth";
 import PaginaDashboard from "./paginas/PaginaDashboard";
 import PaginaContas from "./paginas/PaginaContas";
 import PaginaAssinaturas from "./paginas/PaginaAssinaturas";
+import PaginaMetas from "./paginas/PaginaMetas";
 import Sidebar from "./componentes/Sidebar";
 
 function pegarUsuarioSalvo() {
@@ -39,6 +40,7 @@ export default function App() {
     if (paginaAtual === "dashboard") return <PaginaDashboard />;
     if (paginaAtual === "contas") return <PaginaContas />;
     if (paginaAtual === "assinaturas") return <PaginaAssinaturas />;
+    if (paginaAtual === "metas") return <PaginaMetas />;
     return <PaginaDashboard />;
   }
 

@@ -71,9 +71,9 @@ export default function PaginaDashboard() {
         </div>
       </div>
 
-      <h2 style={{ fontFamily: "'Syne', sans-serif", marginBottom: 16, fontSize: "1rem", color: "var(--texto-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <p style={{ fontFamily: "'Syne', sans-serif", marginBottom: 16, fontSize: "0.72rem", color: "var(--texto-muted)", textTransform: "uppercase", letterSpacing: "0.09em", fontWeight: 700 }}>
         Próximas a vencer
-      </h2>
+      </p>
 
       {contas.filter((c) => !c.paga).length === 0 ? (
         <div className="lista-vazia">Nenhuma conta pendente 🎉</div>
