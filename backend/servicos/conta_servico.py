@@ -36,6 +36,30 @@ def criar_conta(usuario_id, descricao, valor, vencimento_str):
     return _serializar(conta), None
 
 
+def editar_conta(conta_id, usuario_id, descricao, valor, vencimento_str):
+    if not descricao or not valor or not vencimento_str:
+        return None, "Todos os campos são obrigatórios"
+
+    try:
+        valor_float = float(valor)
+        if valor_float <= 0:
+            return None, "O valor deve ser maior que zero"
+    except ValueError:
+        return None, "Valor inválido"
+
+    try:
+        vencimento = datetime.strptime(vencimento_str, "%Y-%m-%d").date()
+    except ValueError:
+        return None, "Data inválida. Use o formato AAAA-MM-DD"
+
+    conta = repositorio.buscar_por_id(conta_id, usuario_id)
+    if not conta:
+        return None, "Conta não encontrada"
+
+    repositorio.atualizar(conta, descricao, valor_float, vencimento)
+    return _serializar(conta), None
+
+
 def pagar_conta(conta_id, usuario_id):
     conta = repositorio.buscar_por_id(conta_id, usuario_id)
     if not conta:
