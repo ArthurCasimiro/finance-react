@@ -30,6 +30,25 @@ def criar(usuario):
     return jsonify(conta), 201
 
 
+@bp_contas.put("/<int:conta_id>")
+@requer_token
+def editar(usuario, conta_id):
+    dados = request.get_json()
+
+    conta, erro = conta_servico.editar_conta(
+        conta_id=conta_id,
+        usuario_id=usuario.id,
+        descricao=dados.get("descricao", ""),
+        valor=dados.get("valor"),
+        vencimento_str=dados.get("vencimento", "")
+    )
+
+    if erro:
+        return jsonify({"erro": erro}), 400
+
+    return jsonify(conta), 200
+
+
 @bp_contas.patch("/<int:conta_id>/pagar")
 @requer_token
 def pagar(usuario, conta_id):
