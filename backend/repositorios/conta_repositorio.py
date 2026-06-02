@@ -23,3 +23,10 @@ class ContaRepositorio:
         conta.paga = True
         bd.session.commit()
         return conta
+
+    def atualizar(self, conta, descricao, valor, vencimento):
+        conta.descricao = descricao
+        conta.valor = valor
+        conta.vencimento = vencimento
+        bd.session.commit()
+        return conta
