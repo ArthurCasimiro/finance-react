@@ -45,6 +45,15 @@ export async function criarContaApi(dados) {
   return resposta.json();
 }
 
+export async function editarContaApi(contaId, dados) {
+  const resposta = await fetch(`${URL_BASE}/contas/${contaId}`, {
+    method: "PUT",
+    headers: cabecalhosAutenticados(),
+    body: JSON.stringify(dados),
+  });
+  return resposta.json();
+}
+
 export async function pagarContaApi(contaId) {
   const resposta = await fetch(`${URL_BASE}/contas/${contaId}/pagar`, {
     method: "PATCH",
