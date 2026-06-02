@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   listarContasApi,
   criarContaApi,
+  editarContaApi,
   pagarContaApi,
   excluirContaApi,
 } from "../api";
@@ -16,6 +17,8 @@ export default function PaginaContas() {
   const [valor, setValor] = useState("");
   const [vencimento, setVencimento] = useState("");
 
+  const [editandoId, setEditandoId] = useState(null);
+
   useEffect(() => {
     carregar();
   }, []);
@@ -27,6 +30,42 @@ export default function PaginaContas() {
     setCarregando(false);
   }
 
+  function iniciarEdicao(conta) {
+    setEditandoId(conta.id);
+    setDescricao(conta.descricao);
+    setValor(conta.valor);
+    setVencimento(conta.vencimento);
+    setErro("");
+  }
+
+  function cancelarEdicao() {
+    setEditandoId(null);
+    setDescricao("");
+    setValor("");
+    setVencimento("");
+    setErro("");
+  }
+
+  async function salvarEdicao() {
+    if (!descricao || !valor || !vencimento) {
+      setErro("Preencha todos os campos");
+      return;
+    }
+    setSalvando(true);
+    const resultado = await editarContaApi(editandoId, {
+      descricao,
+      valor: parseFloat(valor),
+      vencimento,
+    });
+    if (resultado.erro) {
+      setErro(resultado.erro);
+    } else {
+      cancelarEdicao();
+      await carregar();
+    }
+    setSalvando(false);
+  }
+
   async function criarConta() {
     if (!descricao || !valor || !vencimento) {
       setErro("Preencha todos os campos");
@@ -34,9 +73,11 @@ export default function PaginaContas() {
     }
     setErro("");
     setSalvando(true);
-
-    const resultado = await criarContaApi({ descricao, valor: parseFloat(valor), vencimento });
-
+    const resultado = await criarContaApi({
+      descricao,
+      valor: parseFloat(valor),
+      vencimento,
+    });
     if (resultado.erro) {
       setErro(resultado.erro);
     } else {
@@ -77,7 +118,9 @@ export default function PaginaContas() {
       <h1 className="pagina-titulo">Contas a Pagar</h1>
 
       <div className="form-card">
-        <div className="form-titulo">Nova conta</div>
+        <div className="form-titulo">
+          {editandoId ? "Editar conta" : "Nova conta"}
+        </div>
         {erro && <div className="erro-msg">{erro}</div>}
         <div className="form-linha">
           <div className="campo">
@@ -107,9 +150,21 @@ export default function PaginaContas() {
               onChange={(e) => setVencimento(e.target.value)}
             />
           </div>
-          <button className="btn-form" onClick={criarConta} disabled={salvando}>
-            {salvando ? "Salvando..." : "+ Adicionar"}
-          </button>
+          {editandoId ? (
+            <>
+              <button className="btn-form" onClick={salvarEdicao} disabled={salvando}>
+                {salvando ? "Salvando..." : "✓ Salvar"}
+              </button>
+              <button className="btn-form" onClick={cancelarEdicao}
+                style={{ background: "var(--fundo-hover)" }}>
+                Cancelar
+              </button>
+            </>
+          ) : (
+            <button className="btn-form" onClick={criarConta} disabled={salvando}>
+              {salvando ? "Salvando..." : "+ Adicionar"}
+            </button>
+          )}
         </div>
       </div>
 
@@ -135,6 +190,10 @@ export default function PaginaContas() {
                     ✓ Pagar
                   </button>
                 )}
+                <button className="btn-sm" onClick={() => iniciarEdicao(conta)}
+                  style={{ background: "var(--primario)", color: "#fff" }}>
+                  ✎ Editar
+                </button>
                 <button className="btn-sm vermelho" onClick={() => excluir(conta.id)}>
                   Excluir
                 </button>
